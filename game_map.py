@@ -1,7 +1,6 @@
 import config
 import pygame
 
-# Taille totale de la carte (4 fois l'écran)
 map_width = config.screen_width * 4
 map_height = config.screen_height * 4
 
@@ -41,22 +40,17 @@ def cameraLimit():
     centre_ecran_x = config.screen_width / 2
     centre_ecran_y = config.screen_height / 2
 
-    # Position initiale des bords de la carte (quand camera_x = 0, camera_y = 0)
     bord_gauche_initial = centre_ecran_x - largeur_carte_zoom / 2
     bord_droit_initial = centre_ecran_x + largeur_carte_zoom / 2
     bord_haut_initial = centre_ecran_y - hauteur_carte_zoom / 2
     bord_bas_initial = centre_ecran_y + hauteur_carte_zoom / 2
 
-    # Bornes pour camera_x :
-    # - Si on décale vers la droite (camera_x > 0), bord_gauche_initial + camera_x <= 0
-    # - Si on décale vers la gauche (camera_x < 0), bord_droit_initial + camera_x >= screen_width
     min_x = config.screen_width - bord_droit_initial
     max_x = -bord_gauche_initial
 
     min_y = config.screen_height - bord_bas_initial
     max_y = -bord_haut_initial
 
-    # Si la carte zoomée est plus petite que l'écran, on la centre
     if min_x > max_x:
         config.camera_x = (min_x + max_x) / 2
     else:
@@ -69,7 +63,6 @@ def cameraLimit():
 
 
 def draw():
-    # La carte va de -map_width/2 à +map_width/2 en x, et -map_height/2 à +map_height/2 en y
     rect_carte = monde_vers_ecran_rect(
         -map_width / 2,
         -map_height / 2,
@@ -81,7 +74,6 @@ def draw():
     # Tracage du quadrillage
     pas_zoom = TAILLE_CASE * config.zoom
     if pas_zoom >= 4:
-        # Lignes verticales
         x_monde = -map_width / 2
         while x_monde <= map_width / 2:
             x_ecran = config.screen_width / 2 + x_monde * config.zoom + config.camera_x
@@ -94,7 +86,6 @@ def draw():
             )
             x_monde += TAILLE_CASE
 
-        # Lignes horizontales
         y_monde = -map_height / 2
         while y_monde <= map_height / 2:
             y_ecran = config.screen_height / 2 + y_monde * config.zoom + config.camera_y
