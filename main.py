@@ -7,7 +7,7 @@ import arrivée_patients
 
 dragging = False
 
-scene_en_cours = config.scenes[0]  # Commence par la scène du menu
+scene_en_cours = "menu"  # Commence par la scène du menu
 gameRunning = True
 while gameRunning:
     for event in pygame.event.get():
@@ -16,6 +16,8 @@ while gameRunning:
 
     if scene_en_cours == "menu":
         ecran_accueil.draw()
+        if ecran_accueil.est_clique_play():
+            scene_en_cours = "third_person"  # Passe à la scène vue de haut lorsque le bouton est cliqué
 
     if scene_en_cours == "third_person":
 
@@ -37,9 +39,11 @@ while gameRunning:
             elif event.y < 0:
                 config.zoom = max(config.ZOOM_MIN, round(config.zoom - config.ZOOM_PAS, 2))
 
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:
+                scene_en_cours = "first_person"  # Passe à la scène vue à la première personne lorsque la touche espace est pressée
+
         game_map.cameraLimit()
-
-
 
         config.screen.fill((0, 0, 0))
 

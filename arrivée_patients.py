@@ -28,7 +28,7 @@ def stuck_problem():
     return random.choice(thing) + " coincé " + random.choice(body_part)
 
 class Patient:
-    def __init__(self, probleme, gravite_probleme = randint(1, 10), nom = nom_patient(), sprite = pygame.rect(config.screen_width//2, config.screen_height + config.screen_height * 3/4, 50, 50)):
+    def __init__(self, probleme, gravite_probleme = randint(1, 10), nom = nom_patient(), sprite = pygame.Rect(config.screen_width//2, config.screen_height + config.screen_height * 3/4, 50, 50)):
         self.nom = nom
         self.gravite_probleme = gravite_probleme
         self.sprite = sprite
@@ -51,7 +51,7 @@ class Patient:
         return self.gravite_probleme
 
     def set_probleme(self, new_probleme):
-        self.probleme = self.new_probleme     
+        self.probleme = new_probleme     
 
     def set_gravite_probleme(self, new_gravite_probleme):
         self.gravite_probleme = new_gravite_probleme
@@ -59,8 +59,6 @@ class Patient:
     # Méthode pour afficher les détails du patients
     def afficher_details(self):
         if self.probleme == "un contrôle à faire":
-            print("Le patient a", self.probleme)
-        elif self.probleme == "entorse" or self.probleme == "hémorragie interne":
             print("Le patient a", self.probleme)
         elif self.probleme == "un membre à emputer":
             print("Le patient doit se faire emputer un membre ")
@@ -73,24 +71,27 @@ class Patient:
         
         
 def nouveau_patient():
+    patients = config.File()
     clock = pygame.time.Clock()
     debut_temps = pygame.time.get_ticks()
     if chambre_libre(dico_chambre) != []:
         if pygame.time.get_ticks() - debut_temps >= 10000:   # 10000 millisecondes = 10 secondes
             current_patient = Patient()
+            patients.enfile(current_patient)
             debut_temps = pygame.time.get_ticks()
-    elif pygame.time.get_ticks() - debut_temps >= 30000:    # 30000 millisecondes = 30 secondes
-        patient = Patient()
-        debut_temps = pygame.time.get_ticks()
 
-def draw(patient):
+def draw(patients):
     '''
     Fonction qui affiche le patient et pourquoi il vient à l"hôpital.
 
     Paramètres:
-    patient : une instance de la classe Patient
+    patients : une liste d'instances de la classe Patient
     '''
-    assert isinstance(patient, Patient), "Erreur : patient doit être une instance de Patient"
+    assert type(patients) == list, "Le paramètre patients doit être une liste."
+    for patient in patients:
+        assert isinstance(patient, Patient), "Chaque élément de la liste patients doit être une instance de la classe Patient."
 
-    pygame.draw.rect(config.screen, (randint(0, 255), randint(0, 255), randint(0, 255)), patient.sprite)
-    config.afficher_texte(patient.message(), config.screen_width*3/4, config.screen_height//2, config.screen_width*3/4+100, (0, 0, 0))
+    for patient in patients:
+#        if patient.etat() == "en attente":
+        pygame.draw.rect(config.screen, (randint(0, 255), randint(0, 255), randint(0, 255)), patient.sprite)
+        config.afficher_texte(patient.message(), config.screen_width*3/4, config.screen_height//2, config.screen_width*3/4+100, (0, 0, 0))

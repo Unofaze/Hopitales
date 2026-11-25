@@ -21,6 +21,35 @@ scenes = [
     "third_person",
 ]
 
+class File:
+    def __init__(self):
+        self.valeurs = []
+
+    def est_vide(self):
+        return self.valeurs == []
+
+    def enfile(self, x):
+        self.valeurs.insert(0, x)
+
+    def defile(self):
+        if self.est_vide():
+            return None
+        else:
+            return self.valeurs.pop()
+
+    def affiche(self):
+        temp = File()
+        chaine = ""
+
+        while not self.est_vide():
+            elem = self.defile()
+            temp.enfile(elem)
+            chaine = str(elem) + "|" + chaine
+
+        while not temp.est_vide():
+            self.enfile(temp.defile())
+
+        print("|" + chaine)
 
 def afficher_texte(texte, x, y, maxi, couleur, font = None):
     """
