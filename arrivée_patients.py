@@ -16,9 +16,14 @@ def chambre_libre(dico):
             chambres_libres.append(chambre)
     return chambres_libre
 
+def nom_patient():
+    prenoms = ["Alice", "Bob", "Charlie", "David", "Amélie", "Frank", "Patrick", "Anna", "Erwan", "Julia"]
+    noms = ["Dupont", "Martin", "Bernard", "Dubois", "Robert", "Richard", "Thomas", "Petit", "Rossi", "Smith"]
+    return random.choice(prenoms) + random.choice(noms)
+
 class Patient:
     def __init__(self, probleme, gravite_probleme = randint(1, 10), nom):
-        self.nom = nom
+        self.nom = nom_patient()
         self.gravite_probleme = gravite_probleme
         if self.gravite_probleme <= 2:
             self.probleme = "contrôle"
@@ -66,10 +71,7 @@ def nouveau_patient():
         if pygame.time.get_ticks() - debut_temps >= 10000:   # 10000 millisecondes = 10 secondes
             patient = Patient()
 
-def nom_patient():
-    prenoms = ["Alice", "Bob", "Charlie", "David", "Amélie", "Frank", "Patrick", "Anna", "Erwan", "Julia"]
-    noms = ["Dupont", "Martin", "Bernard", "Dubois", "Robert", "Richard", "Thomas", "Petit", "Rossi", "Smith"]
-    return random.choice(prenoms) + " " + random.choice(noms)
+
 
 
 
