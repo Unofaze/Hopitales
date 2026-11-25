@@ -3,9 +3,6 @@ import time
 import random
 from random import randint
 
-
-
-
 class Patient:
     def __init__(self, probleme, gravite_probleme = randint(1, 10)):
         self.gravite_probleme = gravite_probleme
