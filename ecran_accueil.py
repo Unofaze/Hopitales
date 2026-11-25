@@ -1,10 +1,8 @@
 import config
 import pygame
 
-carte_width = config.screen_width * 4
-carte_height = config.screen_height * 4
-gameMap = pygame.Rect(0, 0, carte_width, carte_height)
-gameMap.center = (config.screen_width // 2, config.screen_height // 2)
+menu_image = pygame.transform.scale(pygame.image.load("menu.png").convert_alpha(), (config.screen_width, config.screen_height))
+menu = pygame.Rect(0, 0, config.screen_width, config.screen_height)
 
 # Boutons des menus
 def bouton_menus(x, y, width, height):
@@ -43,6 +41,5 @@ def bouton_menus(x, y, width, height):
     return False
 
 def draw():
-    
-
+    config.screen.blit(menu_image, menu)
 

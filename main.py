@@ -5,6 +5,7 @@ import pygame
 
 dragging = False
 
+scene_en_cours = config.scenes[0]  # Commence par la scène du menu
 gameRunning = True
 while gameRunning:
     for event in pygame.event.get():

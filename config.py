@@ -15,3 +15,9 @@ ZOOM_MIN = 0.5
 ZOOM_MAX = 2.0
 ZOOM_PAS = 0.1
 
+scenes = [
+    "menu",
+    "first_person",
+    "third_person",
+]
+
