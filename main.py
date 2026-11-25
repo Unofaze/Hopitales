@@ -45,6 +45,7 @@ while gameRunning:
 
         game_map.cameraLimit()
 
+
         config.screen.fill((0, 0, 0))
 
         game_map.draw()
