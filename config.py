@@ -45,14 +45,14 @@ def afficher_texte(texte, x, y, maxi, couleur):
 
     for mot in mots:
         # Vérifie si on peut ajouter le mot à la ligne actuelle
-        if font.size(ligne_actuelle + mot)[0] <= LARGEUR - x - maxi:
+        if font.size(ligne_actuelle + mot)[0] <= screen_width - x - maxi:
             ligne_actuelle += mot + ' '
         else:
             # Dessine la ligne actuelle et réinitialise pour la nouvelle ligne
-            fenetre.blit(font.render(ligne_actuelle.strip(), True, couleur), (x, y + y_offset))
+            screen.blit(font.render(ligne_actuelle.strip(), True, couleur), (x, y + y_offset))
             ligne_actuelle = mot + ' '
             y_offset += font.get_height()  # Augmente l'offset pour la prochaine ligne
 
     # Dessine la dernière ligne si elle n'est pas vide
     if ligne_actuelle:
-        fenetre.blit(font.render(ligne_actuelle.strip(), True, couleur), (x, y + y_offset))
+        screen.blit(font.render(ligne_actuelle.strip(), True, couleur), (x, y + y_offset))

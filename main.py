@@ -1,6 +1,7 @@
 import config
 import game_map
 import hospital
+import ecran_accueil
 import pygame
 
 dragging = False
@@ -12,7 +13,12 @@ while gameRunning:
         if event.type == pygame.QUIT:
             gameRunning = False
 
-        elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 2:
+    if scene_en_cours == "menu":
+        ecran_accueil.draw()
+
+    if scene_en_cours == "third_person":
+
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 2:
             dragging = True
 
         elif event.type == pygame.MOUSEBUTTONUP and event.button == 2:
@@ -30,12 +36,12 @@ while gameRunning:
             elif event.y < 0:
                 config.zoom = max(config.ZOOM_MIN, round(config.zoom - config.ZOOM_PAS, 2))
 
-            game_map.cameraLimit()
+        game_map.cameraLimit()
 
-    config.screen.fill((0, 0, 0))
+        config.screen.fill((0, 0, 0))
 
-    game_map.draw()
-    hospital.draw()
+        game_map.draw()
+        hospital.draw()
 
     pygame.display.flip()
 
