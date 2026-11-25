@@ -65,7 +65,11 @@ def nouveau_patient():
     if chambre_libre(dico_chambre) != []:
         if pygame.time.get_ticks() - debut_temps >= 10000:   # 10000 millisecondes = 10 secondes
             patient = Patient()
-    
+
+def nom_patient():
+    prenoms = ["Alice", "Bob", "Charlie", "David", "Amélie", "Frank", "Patrick", "Anna", "Erwan", "Julia"]
+    noms = ["Dupont", "Martin", "Bernard", "Dubois", "Robert", "Richard", "Thomas", "Petit", "Rossi", "Smith"]
+    return random.choice(prenoms) + " " + random.choice(noms)
 
 
 
