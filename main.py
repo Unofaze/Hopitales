@@ -2,6 +2,7 @@ import config
 import game_map
 import hospital
 import pygame
+import arrivée_patients
 
 dragging = False
 
@@ -32,10 +33,16 @@ while gameRunning:
 
             game_map.cameraLimit()
 
+    
+
     config.screen.fill((0, 0, 0))
 
-    game_map.draw()
-    hospital.draw()
+    if scene_en_cours == "third_person":
+        game_map.draw()
+        hospital.draw()
+
+    if scene_en_cours == "first_person":
+        arrivée_patients.draw()
 
     pygame.display.flip()
 

@@ -72,7 +72,8 @@ def nouveau_patient():
             patient = Patient()
 
 
-
+def draw():
+    pass
 
 
 
