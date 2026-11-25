@@ -4,7 +4,9 @@ import random
 from random import randint
 
 
-class Patient
+
+
+class Patient:
     def __init__(self, probleme, gravite_probleme = randint(1, 10)):
         self.gravite_probleme = gravite_probleme
         if self.gravite_probleme <= 2:
@@ -34,19 +36,19 @@ class Patient
 
     # Méthode pour afficher les détails du compte
     def afficher_details(self):
-        if probleme == "contrôle":
+        if self.probleme == "contrôle":
             print("Le patient doit réaliser un ", self.probleme)
-        elif probleme == "entorse" or probleme == "hémorragie interne":
+        elif self.probleme == "entorse" or self.probleme == "hémorragie interne":
             print("Le patient souffre d'une ", self.probleme)
-        elif probleme == "membre à emputer":
+        elif self.probleme == "membre à emputer":
             print("Le patient doit se faire emputer un membre ")
         else:
             print("Le patient souffre de ", self.probleme)
         print("La gravité du problème est :", self.gravite_probleme, "sur une échelle de 1 à 10.")
         
         
-def nouveau_patient:
-    
+def nouveau_patient():
+    pass
     
         
         
