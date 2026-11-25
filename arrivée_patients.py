@@ -2,6 +2,7 @@ import pygame
 import time
 import random
 from random import randint
+import config
 
 def dico_chambre():
     chambres = {}
@@ -17,14 +18,16 @@ def chambre_libre(dico):
     return chambres_libre
 
 def nom_patient():
-    prenoms = ["Alice", "Bob", "Charlie", "David", "Amélie", "Frank", "Patrick", "Anna", "Erwan", "Julia"]
-    noms = ["Dupont", "Martin", "Bernard", "Dubois", "Robert", "Richard", "Thomas", "Petit", "Rossi", "Smith"]
-    return random.choice(prenoms) + random.choice(noms)
+prenoms = ["Alice", "Bob", "Charlie", "David", "Amélie", "Frank", "Patrick", "Anna", "Erwan", "Julia"]
+noms = ["Dupont", "Martin", "Bernard", "Dubois", "Robert", "Richard", "Thomas", "Petit", "Rossi", "Smith"]
+return random.choice(prenoms) + random.choice(noms)
+
 
 class Patient:
-    def __init__(self, probleme, gravite_probleme = randint(1, 10), nom):
-        self.nom = nom_patient()
+    def __init__(self, probleme, gravite_probleme = randint(1, 10), nom = nom_patient(), sprite = pygame.rect(config.screen_width//2, config.screen_height//2, 50, 50)):
+        self.nom = nom
         self.gravite_probleme = gravite_probleme
+        self.sprite = sprite
         if self.gravite_probleme <= 2:
             self.probleme = "contrôle"
         elif self.gravite_probleme == 3:
@@ -70,8 +73,7 @@ def nouveau_patient():
     if chambre_libre(dico_chambre) != []:
         if pygame.time.get_ticks() - debut_temps >= 10000:   # 10000 millisecondes = 10 secondes
             patient = Patient()
-
-
+    
 
 
 
