@@ -3,17 +3,31 @@ import time
 import random
 from random import randint
 
+def dico_chambre():
+    chambres = {}
+    for i in range(1, 21):
+        chambres[chambre[i]] = 0
+    return chambres
+
+def chambre_libre(dico):
+    chambres_libres = []
+    for chambre in dico:
+        if dico[chambre] == 0:
+            chambres_libres.append(chambre)
+    return chambres_libre
+
 class Patient:
-    def __init__(self, probleme, gravite_probleme = randint(1, 10)):
+    def __init__(self, probleme, gravite_probleme = randint(1, 10), nom):
+        self.nom = nom
         self.gravite_probleme = gravite_probleme
         if self.gravite_probleme <= 2:
             self.probleme = "contrôle"
         elif self.gravite_probleme == 3:
             self.probleme = "quelque chose coincé quelque part"
         elif self.gravite_probleme <= 6:
-            self.probleme = randint("blessure superficielle", "entorse", "déchirure musculaire")
+            self.probleme = random.choice(["blessure superficielle", "entorse", "déchirure musculaire"])
         elif self.gravite_probleme <= 9:
-            self.probleme = randint("fracture", "fracture ouverte","hémorragie interne")
+            self.probleme = random.choice(["fracture", "fracture ouverte","hémorragie interne"])
         else:
             self.probleme = "membre à emputer"
         
@@ -45,7 +59,23 @@ class Patient:
         
         
 def nouveau_patient():
-    pass
+    clock = pygame.time.Clock()
+    debut_temps = pygame.time.get_ticks()
+    patient0 = Patient()
+    if chambre_libre(dico_chambre) != []:
+        if pygame.time.get_ticks() - debut_temps >= 10000:   # 10000 millisecondes = 10 secondes
+            patient = Patient()
     
+
+
+
+
+
+
+
+
+
+
+
         
         
