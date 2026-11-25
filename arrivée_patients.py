@@ -7,7 +7,7 @@ import config
 def dico_chambre():
     chambres = {}
     for i in range(1, 21):
-        chambres[chambre[i]] = 0
+        chambres[i] = 0
     return chambres
 
 def chambre_libre(dico):
@@ -15,31 +15,35 @@ def chambre_libre(dico):
     for chambre in dico:
         if dico[chambre] == 0:
             chambres_libres.append(chambre)
-    return chambres_libre
+    return chambres_libres
 
 def nom_patient():
-prenoms = ["Alice", "Bob", "Charlie", "David", "Amélie", "Frank", "Patrick", "Anna", "Erwan", "Julia"]
-noms = ["Dupont", "Martin", "Bernard", "Dubois", "Robert", "Richard", "Thomas", "Petit", "Rossi", "Smith"]
-return random.choice(prenoms) + random.choice(noms)
+    prenoms = ["Alice", "Bob", "Charlie", "David", "Amélie", "Frank", "Patrick", "Anna", "Erwan", "Julia"]
+    noms = ["Dupont", "Martin", "Bernard", "Dubois", "Robert", "Richard", "Thomas", "Petit", "Rossi", "Smith"]
+    return random.choice(prenoms) + " " + random.choice(noms)
 
+def stuck_problem():
+    thing = ["un 36 tonnes", "un Boeing 747", "un TGV Inoui", "une pastèque", "un câble USB-C vers HDMI", "un bout de peau de pomme", "1 milliard de petit pois", "une poire", "un vélo"]
+    body_part = ["dans la gorge", "dans l'oreille", "dans l'anus", "dans l'urètre", "dans l'estomac", "entre les dents"]
+    return random.choice(thing) + " coincé " + random.choice(body_part)
 
 class Patient:
-    def __init__(self, probleme, gravite_probleme = randint(1, 10), nom = nom_patient(), sprite = pygame.rect(config.screen_width//2, config.screen_height//2, 50, 50)):
+    def __init__(self, probleme, gravite_probleme = randint(1, 10), nom = nom_patient(), sprite = pygame.rect(config.screen_width//2, config.screen_height + config.screen_height * 3/4, 50, 50)):
         self.nom = nom
         self.gravite_probleme = gravite_probleme
         self.sprite = sprite
+        self.probleme = probleme
         if self.gravite_probleme <= 2:
-            self.probleme = "contrôle"
+            self.probleme = "un contrôle à faire"
         elif self.gravite_probleme == 3:
-            self.probleme = "quelque chose coincé quelque part"
+            self.probleme = stuck_problem()
         elif self.gravite_probleme <= 6:
-            self.probleme = random.choice(["blessure superficielle", "entorse", "déchirure musculaire"])
+            self.probleme = random.choice(["une blessure superficielle", "une entorse", "une déchirure musculaire"])
         elif self.gravite_probleme <= 9:
-            self.probleme = random.choice(["fracture", "fracture ouverte","hémorragie interne"])
+            self.probleme = random.choice(["une fracture", "une fracture ouverte","une hémorragie interne"])
         else:
-            self.probleme = "membre à emputer"
-        
-        
+            self.probleme = "un membre à emputer"
+            
     def get_probleme(self):
         return self.probleme
 
@@ -47,43 +51,46 @@ class Patient:
         return self.gravite_probleme
 
     def set_probleme(self, new_probleme):
-        self.probleme = self.new_probleme
-        
+        self.probleme = self.new_probleme     
 
     def set_gravite_probleme(self, new_gravite_probleme):
         self.gravite_probleme = new_gravite_probleme
 
-    # Méthode pour afficher les détails du compte
+    # Méthode pour afficher les détails du patients
     def afficher_details(self):
-        if self.probleme == "contrôle":
-            print("Le patient doit réaliser un ", self.probleme)
+        if self.probleme == "un contrôle à faire":
+            print("Le patient a", self.probleme)
         elif self.probleme == "entorse" or self.probleme == "hémorragie interne":
-            print("Le patient souffre d'une ", self.probleme)
-        elif self.probleme == "membre à emputer":
+            print("Le patient a", self.probleme)
+        elif self.probleme == "un membre à emputer":
             print("Le patient doit se faire emputer un membre ")
         else:
-            print("Le patient souffre de ", self.probleme)
+            print("Le patient a ", self.probleme)
         print("La gravité du problème est :", self.gravite_probleme, "sur une échelle de 1 à 10.")
+
+    def message(self):
+        return "Bonjour, je m'appelle", self.nom, "Je viens parce que j'ai", self.probleme
         
         
 def nouveau_patient():
     clock = pygame.time.Clock()
     debut_temps = pygame.time.get_ticks()
-    patient0 = Patient()
     if chambre_libre(dico_chambre) != []:
         if pygame.time.get_ticks() - debut_temps >= 10000:   # 10000 millisecondes = 10 secondes
-            patient = Patient()
-    
+            current_patient = Patient()
+            debut_temps = pygame.time.get_ticks()
+    elif pygame.time.get_ticks() - debut_temps >= 30000:    # 30000 millisecondes = 30 secondes
+        patient = Patient()
+        debut_temps = pygame.time.get_ticks()
 
+def draw(patient):
+    '''
+    Fonction qui affiche le patient et pourquoi il vient à l"hôpital.
 
+    Paramètres:
+    patient : une instance de la classe Patient
+    '''
+    assert isinstance(patient, Patient), "Erreur : patient doit être une instance de Patient"
 
-
-
-
-
-
-
-
-
-        
-        
+    pygame.draw.rect(config.screen, (randint(0, 255), randint(0, 255), randint(0, 255)), patient.sprite)
+    config.afficher_texte(patient.message(), config.screen_width*3/4, config.screen_height//2, config.screen_width*3/4+100, (0, 0, 0))

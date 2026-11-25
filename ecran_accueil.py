@@ -40,6 +40,8 @@ def bouton_menus(x, y, width, height):
         return True
     return False
 
+
+
 def draw():
     config.screen.blit(menu_image, menu)
 
