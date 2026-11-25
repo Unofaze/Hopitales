@@ -6,7 +6,7 @@ map_height = config.screen_height * 4
 
 TAILLE_CASE = 100
 
-# non
+# non fdp
 def monde_vers_ecran_rect(x, y, largeur, hauteur):
     """
     Convertit un rectangle défini dans le repère monde (centre = (0, 0))
