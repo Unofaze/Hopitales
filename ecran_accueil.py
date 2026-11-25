@@ -1,9 +1,9 @@
 import config
 import pygame
 
-map_width = config.screen_width * 4
-map_height = config.screen_height * 4
-gameMap = pygame.Rect(0, 0, map_width, map_height)
+carte_width = config.screen_width * 4
+carte_height = config.screen_height * 4
+gameMap = pygame.Rect(0, 0, carte_width, carte_height)
 gameMap.center = (config.screen_width // 2, config.screen_height // 2)
 
 # Boutons des menus
@@ -41,5 +41,8 @@ def bouton_menus(x, y, width, height):
     if bout.collidepoint(souris) and click[0] :
         return True
     return False
+
+def draw():
+    
 
 
