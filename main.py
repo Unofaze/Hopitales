@@ -1,19 +1,27 @@
 import config
 import game_map
 import hospital
+import ecran_accueil
 import pygame
 import arrivée_patients
 
 dragging = False
 
-scene_en_cours = config.scenes[0]  # Commence par la scène du menu
+scene_en_cours = "menu"  # Commence par la scène du menu
 gameRunning = True
 while gameRunning:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             gameRunning = False
 
-        elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 2:
+    if scene_en_cours == "menu":
+        ecran_accueil.draw()
+        if ecran_accueil.est_clique_play():
+            scene_en_cours = "third_person"  # Passe à la scène vue de haut lorsque le bouton est cliqué
+
+    if scene_en_cours == "third_person":
+
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 2:
             dragging = True
 
         elif event.type == pygame.MOUSEBUTTONUP and event.button == 2:
@@ -31,13 +39,17 @@ while gameRunning:
             elif event.y < 0:
                 config.zoom = max(config.ZOOM_MIN, round(config.zoom - config.ZOOM_PAS, 2))
 
-            game_map.cameraLimit()
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:
+                scene_en_cours = "first_person"  # Passe à la scène vue à la première personne lorsque la touche espace est pressée
+
+        game_map.cameraLimit()
 
     
 
-    config.screen.fill((0, 0, 0))
 
-    if scene_en_cours == "third_person":
+        config.screen.fill((0, 0, 0))
+
         game_map.draw()
         hospital.draw()
 
