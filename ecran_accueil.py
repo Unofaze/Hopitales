@@ -43,7 +43,6 @@ def bouton_menus(x, y, width, height):
 def est_clique_play():
     return bouton_menus(round(config.screen_width*3/100), round(config.screen_height-config.screen_height*15/100), round(config.screen_width*32/100), round(config.screen_height*11/100))
 
-
 def draw():
     config.screen.blit(menu_image, menu)
 
