@@ -59,12 +59,12 @@ class Patient:
     # Méthode pour afficher les détails du patients
     def afficher_details(self):
         if self.probleme == "un contrôle à faire":
-            print("Le patient a", self.probleme)
+            config.afficher_texte("Le patient a" + self.probleme, config.screen_width*3/4, config.screen_height//2, config.screen_width*3/4+100, (0, 0, 0))
         elif self.probleme == "un membre à emputer":
-            print("Le patient doit se faire emputer un membre ")
+            config.afficher_texte("Le patient doit se faire emputer un membre ", config.screen_width*3/4, config.screen_height//2, config.screen_width*3/4+100, (0, 0, 0))
         else:
-            print("Le patient a ", self.probleme)
-        print("La gravité du problème est :", self.gravite_probleme, "sur une échelle de 1 à 10.")
+            config.afficher_texte("Le patient a " + self.probleme, config.screen_width*3/4, config.screen_height//2, config.screen_width*3/4+100, (0, 0, 0))
+        config.afficher_texte("La gravité du problème est :" + str(self.gravite_probleme) + " sur une échelle de 1 à 10.", config.screen_width*3/4, config.screen_height//2 + 50, config.screen_width*3/4+100, (0, 0, 0))
 
     def message(self):
         return "Bonjour, je m'appelle", self.nom, "Je viens parce que j'ai", self.probleme
