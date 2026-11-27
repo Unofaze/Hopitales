@@ -92,6 +92,6 @@ def draw(patients):
         assert isinstance(patient, Patient), "Chaque élément de la liste patients doit être une instance de la classe Patient."
 
     for patient in patients:
-#        if patient.etat() == "en attente":
-        pygame.draw.rect(config.screen, (randint(0, 255), randint(0, 255), randint(0, 255)), patient.sprite)
-        config.afficher_texte(patient.message(), config.screen_width*3/4, config.screen_height//2, config.screen_width*3/4+100, (0, 0, 0))
+        if patient.etat() == "en attente":
+            pygame.draw.rect(config.screen, (randint(0, 255), randint(0, 255), randint(0, 255)), patient.sprite)
+            config.afficher_texte(patient.message(), config.screen_width*3/4, config.screen_height//2, config.screen_width*3/4+100, (0, 0, 0))

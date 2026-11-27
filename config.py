@@ -51,7 +51,7 @@ class File:
 
         print("|" + chaine)
 
-def afficher_texte(texte, x, y, maxi, couleur, font = None):
+def afficher_texte(texte, x, y, maxi, couleur, font=None):
     """
     Cette fonction permet d'afficher du texte dans une fenêtre Pygame à partir d'une position donnée (x, y). Si une ligne de texte dépasse
     la largeur de la fenêtre, elle est automatiquement coupée et continuée à la ligne suivante.
@@ -72,6 +72,10 @@ def afficher_texte(texte, x, y, maxi, couleur, font = None):
                           ou pygame.font.Font("ma_police.ttf", 40).
                         - Si on ne la precise pas, une police par defaut est utilisee.
     """
+
+    if font == None:
+        font = pygame.font.SysFont("arial", 24)
+
     mots = texte.split(' ')
     ligne_actuelle = ''
     y_offset = 0
