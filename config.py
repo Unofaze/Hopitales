@@ -93,3 +93,19 @@ def afficher_texte(texte, x, y, maxi, couleur, font=None):
     # Dessine la dernière ligne si elle n'est pas vide
     if ligne_actuelle:
         screen.blit(font.render(ligne_actuelle.strip(), True, couleur), (x, y + y_offset))
+
+
+# --------------------------------------------------------- |
+# Infos comme ça qui peuvent servir :
+
+    # coordonnées de la zone de texte des clients :
+        # abscisse du message : 24/180 de la largeur de l'écran
+        # largeur max du message : 59/180 de la largeur de l'écran
+        # ordonnée du message : 22/180 de la hauteur de l'écran
+        # hauteur max du message : 32/180 de la hauteur de l'écran
+
+    # coordonnées du bouton "play" de l'écrand de démarrage :
+        # abscisse du bouton : 3/100 de la largeur de l'écran
+        # largeur du bouton : 32/100 de la largeur de l'écran
+        # ordonnée du bouton : 15/100 de la hauteur de l'écran
+        # hauteur du bouton : 11/100 de la hauteur de l'écran

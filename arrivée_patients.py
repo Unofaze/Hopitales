@@ -126,6 +126,12 @@ class GestionnaireHospitalier:
         if self.patient_en_cours is None and not self.file_d_attente.est_vide():
             self.patient_en_cours = self.file_d_attente.defile()
 
+    def draw_bureau(self):
+        if self.patient_en_cours is not None:
+            pygame.draw.rect(config.screen, (randint(0, 255), randint(0, 255), randint(0, 255)), self.patient_en_cours.sprite)
+            config.afficher_texte(self.patient_en_cours.message(), round(config.screen_width*24/180), round(config.screen_height*22/180), round(config.screen_width*59/180), (0, 0, 0))
+
+
 
 def draw(patients):
     '''
@@ -141,4 +147,5 @@ def draw(patients):
     for patient in patients:
         if patient.etat() == "en attente":
             pygame.draw.rect(config.screen, (randint(0, 255), randint(0, 255), randint(0, 255)), patient.sprite)
-            config.afficher_texte(patient.message(), config.screen_width*3/4, config.screen_height//2, config.screen_width*3/4+100, (0, 0, 0))
+
+            config.afficher_texte(patient.message(), round(config.screen_width*24/180), round(config.screen_height*22/180), round(config.screen_width*59/180), (0, 0, 0))
