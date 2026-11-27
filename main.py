@@ -7,16 +7,16 @@ import arrivée_patients
 
 dragging = False
 scene_en_cours = "menu"
-
-# Liste de patients (avec un patient de test pour éviter un écran vide)
-liste_patients = [arrivée_patients.Patient("")]
+hopital_manager = arrivée_patients.GestionnaireHospitalier(10000) # 10000 millisecondes = 10 secondes (temps entre l'arivée de chaque patient)
 
 gameRunning = True
 while gameRunning:
-    # 1. TOUS les événements doivent être indentés dans cette boucle for
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             gameRunning = False
+
+        if scene_en_cours != "menu":
+            hopital_manager.mettre_a_jour_accueil()
 
         if scene_en_cours == "third_person":
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 2:
@@ -46,7 +46,6 @@ while gameRunning:
                 if event.key == pygame.K_SPACE:
                     scene_en_cours = "third_person"
 
-    # 2. Affichage de la scène active
     if scene_en_cours == "menu":
         ecran_accueil.draw()
         if ecran_accueil.est_clique_play():
@@ -60,7 +59,8 @@ while gameRunning:
 
     elif scene_en_cours == "first_person":
         config.screen.fill((255, 255, 255))
-        arrivée_patients.draw(liste_patients)
+        hopital_manager.draw_salle_d_attente()
+
 
     pygame.display.flip()
 

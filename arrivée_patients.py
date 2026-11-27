@@ -4,13 +4,25 @@ import random
 from random import randint
 import config
 
+sprites_patients = [
+    pygame.transform.scale(pygame.image.load("hopital pour projet nsi/fps/client 1/c1b.png").convert_alpha(), (round(config.screen_width*63/180), round(config.screen_height*93/109))),
+    pygame.transform.scale(pygame.image.load("hopital pour projet nsi/fps/client 1/c1g.png").convert_alpha(), (round(config.screen_width*63/180), round(config.screen_height*93/109))),
+    pygame.transform.scale(pygame.image.load("hopital pour projet nsi/fps/client 1/c1o.png").convert_alpha(), (round(config.screen_width*63/180), round(config.screen_height*93/109))),
+    pygame.transform.scale(pygame.image.load("hopital pour projet nsi/fps/client 1/c1r.png").convert_alpha(), (round(config.screen_width*63/180), round(config.screen_height*93/109))),
+    pygame.transform.scale(pygame.image.load("hopital pour projet nsi/fps/client 2/c2r.png").convert_alpha(), (round(config.screen_width*42/180), round(config.screen_height*84/109))),
+    pygame.transform.scale(pygame.image.load("hopital pour projet nsi/fps/client riche/cr.png").convert_alpha(), (round(config.screen_width*33/180), round(config.screen_height*103/109))),
+]
+
 def dico_chambre():
+    '''
+    Crée un dictionnaire représentant les chambres de l'hôpital (clés du dictionnaire).
+    Chaque chambre a une valeur associée de 0, ce qui signifie qu'elle est libre. (elle vaut 1 si elle est occupée)
+    '''
     chambres = {}
     for i in range(1, 21):
         chambres[i] = 0
     return chambres
     
-
 def nom_patient():
     prenoms = ["Alice", "Bob", "Charlie", "David", "Amélie", "Frank", "Patrick", "Anna", "Erwan", "Julia"]
     noms = ["Dupont", "Martin", "Bernard", "Dubois", "Robert", "Richard", "Thomas", "Petit", "Rossi", "Smith"]
@@ -21,12 +33,14 @@ def stuck_problem():
     body_part = ["dans la gorge", "dans l'oreille", "dans l'anus", "dans l'urètre", "dans l'estomac", "entre les dents"]
     return random.choice(thing) + " coincé " + random.choice(body_part)
 
+def sprite_patient(sprites_list):
+    return sprites_list[randint(0, len(sprites_list) - 1)]
+
 class Patient:
-    def __init__(self, probleme, gravite_probleme = randint(1, 10), sprite = pygame.Rect(config.screen_width//2, config.screen_height + config.screen_height * 3/4, 50, 50)):
+    def __init__(self, gravite_probleme = randint(1, 10)):
         self.nom = nom_patient()
         self.gravite_probleme = gravite_probleme
-        self.sprite = sprite
-        self.probleme = probleme
+        self.sprite = sprite_patient(sprites_patients)
 
         if self.gravite_probleme <= 2:
             self.probleme = "un contrôle à faire"
@@ -51,21 +65,23 @@ class Patient:
     def set_gravite_probleme(self, new_gravite_probleme):
         self.gravite_probleme = new_gravite_probleme
 
-    # Méthode pour afficher les détails du patients
-    def afficher_details(self):
-        if self.probleme == "un contrôle à faire":
-            config.afficher_texte("Le patient a" + self.probleme, config.screen_width*3/4, config.screen_height//2, config.screen_width*3/4+100, (0, 0, 0))
-        elif self.probleme == "un membre à emputer":
-            config.afficher_texte("Le patient doit se faire emputer un membre ", config.screen_width*3/4, config.screen_height//2, config.screen_width*3/4+100, (0, 0, 0))
-        else:
-            config.afficher_texte("Le patient a " + self.probleme, config.screen_width*3/4, config.screen_height//2, config.screen_width*3/4+100, (0, 0, 0))
-        config.afficher_texte("La gravité du problème est :" + str(self.gravite_probleme) + " sur une échelle de 1 à 10.", config.screen_width*3/4, config.screen_height//2 + 50, config.screen_width*3/4+100, (0, 0, 0))
+# ! Ne surtout pas supprimer, je vais la mettre à un autre endroit!
+
+#    # Méthode pour afficher les détails du patients
+#    def afficher_details(self):
+#        if self.probleme == "un contrôle à faire":
+#            config.afficher_texte("Le patient a" + self.probleme, config.screen_width*3/4, config.screen_height//2, config.screen_width*3/4+100, (0, 0, 0))
+#        elif self.probleme == "un membre à emputer":
+#            config.afficher_texte("Le patient doit se faire emputer un membre ", config.screen_width*3/4, config.screen_height//2, config.screen_width*3/4+100, (0, 0, 0))
+#        else:
+#            config.afficher_texte("Le patient a " + self.probleme, config.screen_width*3/4, config.screen_height//2, config.screen_width*3/4+100, (0, 0, 0))
+#        config.afficher_texte("La gravité du problème est :" + str(self.gravite_probleme) + " sur une échelle de 1 à 10.", config.screen_width*3/4, config.screen_height//2 + 50, config.screen_width*3/4+100, (0, 0, 0))
 
     def message(self):
-        return "Bonjour, je m'appelle", self.nom, "Je viens parce que j'ai", self.probleme
-        
+        return f"Bonjour, je m'appelle {self.nom}, Je viens parce que j'ai {self.probleme}"
+
 class GestionnaireHospitalier:
-    def __init__(self, delai_arrivee_ms=10000):  # 10000 millisecondes = 10 secondes
+    def __init__(self, delai_arrivee_ms):
         self.file_d_attente = config.File()
         self.patient_en_cours = None
         self.chambres = dico_chambre()
@@ -73,6 +89,9 @@ class GestionnaireHospitalier:
 
         self.delai_arrivee_ms = delai_arrivee_ms
         self.dernier_ajout_ms = pygame.time.get_ticks()
+
+        self.fond_salle_d_attente = pygame.transform.scale(pygame.image.load("hopital pour projet nsi/fps/salle d'attente.png").convert_alpha(),(config.screen_width, config.screen_height))
+        self.bureau = pygame.transform.scale(pygame.image.load("hopital pour projet nsi/fps/bureau.png").convert_alpha(),(config.screen_width, config.screen_height))
 
     def get_delai_arrivee_ms(self):
         return self.delai_arrivee_ms
@@ -126,26 +145,9 @@ class GestionnaireHospitalier:
         if self.patient_en_cours is None and not self.file_d_attente.est_vide():
             self.patient_en_cours = self.file_d_attente.defile()
 
-    def draw_bureau(self):
+    def draw_salle_d_attente(self):
+        config.screen.blit(self.fond_salle_d_attente, (0, 0))
         if self.patient_en_cours is not None:
-            pygame.draw.rect(config.screen, (randint(0, 255), randint(0, 255), randint(0, 255)), self.patient_en_cours.sprite)
-            config.afficher_texte(self.patient_en_cours.message(), round(config.screen_width*24/180), round(config.screen_height*22/180), round(config.screen_width*59/180), (0, 0, 0))
-
-
-
-def draw(patients):
-    '''
-    Fonction qui affiche le patient et pourquoi il vient à l"hôpital.
-
-    Paramètres:
-    patients : une liste d'instances de la classe Patient
-    '''
-    assert type(patients) == list, "Le paramètre patients doit être une liste."
-    for patient in patients:
-        assert isinstance(patient, Patient), "Chaque élément de la liste patients doit être une instance de la classe Patient."
-
-    for patient in patients:
-        if patient.etat() == "en attente":
-            pygame.draw.rect(config.screen, (randint(0, 255), randint(0, 255), randint(0, 255)), patient.sprite)
-
-            config.afficher_texte(patient.message(), round(config.screen_width*24/180), round(config.screen_height*22/180), round(config.screen_width*59/180), (0, 0, 0))
+            config.screen.blit(self.patient_en_cours.sprite, (round(config.screen_width*101/180), round(config.screen_height*16/109)))
+            config.afficher_texte(self.patient_en_cours.message(), round(config.screen_width*24/180), round(config.screen_height*22/109), round(config.screen_width*59/180), (0, 0, 0))
+        config.screen.blit(self.bureau, (0, 0))

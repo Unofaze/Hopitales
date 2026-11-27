@@ -96,16 +96,34 @@ def afficher_texte(texte, x, y, maxi, couleur, font=None):
 
 
 # --------------------------------------------------------- |
-# Infos comme ça qui peuvent servir :
+# Infos comme ça qui peuvent servir (Joseph je vais te baiser à pas prendre des multiples de 1920 et 1080 pour les tailles des fichiers pixilart) :
 
     # coordonnées de la zone de texte des clients :
         # abscisse du message : 24/180 de la largeur de l'écran
         # largeur max du message : 59/180 de la largeur de l'écran
-        # ordonnée du message : 22/180 de la hauteur de l'écran
-        # hauteur max du message : 32/180 de la hauteur de l'écran
+        # ordonnée du message : 22/109 de la hauteur de l'écran
+        # hauteur max du message : 32/109 de la hauteur de l'écran
 
     # coordonnées du bouton "play" de l'écrand de démarrage :
         # abscisse du bouton : 3/100 de la largeur de l'écran
         # largeur du bouton : 32/100 de la largeur de l'écran
         # ordonnée du bouton : 15/100 de la hauteur de l'écran
         # hauteur du bouton : 11/100 de la hauteur de l'écran
+
+    # coordonnées du sprite du client 1 :
+        # abscisse du sprite du client 1 : 101/180 de la largeur de l'écran
+        # largeur du sprite du client 1 : 63/180 de la largeur de l'écran
+        # ordonnée du sprite du client 1 : 16/109 de la hauteur de l'écran
+        # hauteur du sprite du client 1 : 93/109 de la hauteur de l'écran
+
+    # coordonnées du sprite du client 2 :
+        # abscisse du sprite du client 2 : 101/180 de la largeur de l'écran
+        # largeur du sprite du client 2 : 42/180 de la largeur de l'écran
+        # ordonnée du sprite du client 2 : 16/109 de la hauteur de l'écran
+        # hauteur du sprite du client 2 : 84/109 de la hauteur de l'écran
+
+    # coordonnées du sprite du client riche :
+        # abscisse du sprite du client riche : 101/180 de la largeur de l'écran
+        # largeur du sprite du client riche : 33/180 de la largeur de l'écran
+        # ordonnée du sprite du client riche : 16/109 de la hauteur de l'écran
+        # hauteur du sprite du client riche : 103/109 de la hauteur de l'écran    
