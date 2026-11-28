@@ -21,6 +21,7 @@ bulles_patients = [
 
 zone_de_texte = pygame.image.load("hopital pour projet nsi/fps/cadre textuel.png").convert_alpha()
 
+
 def dico_chambre():
     '''
     Crée un dictionnaire représentant les chambres de l'hôpital (clés du dictionnaire).
@@ -169,12 +170,12 @@ class GestionnaireHospitalier:
 
         if self.patient_en_cours is not None:
             # Taille max 2 fois plus grande que les proportions de référence, sans déformation
-            max_w = rect_scene.width
-            max_h = rect_scene.height
+            max_w = round(rect_scene.width * (63 / 180) * 2)
+            max_h = round(rect_scene.height * (93 / 109) * 2)
             sprite_scaled = config.scale_fit(self.patient_en_cours.sprite, max_w, max_h)
 
             sprite_rect = sprite_scaled.get_rect()
-            sprite_rect.x = rect_scene.x + rect_scene.width
+            sprite_rect.x = rect_scene.x + round(rect_scene.width * (92 / 180))
             sprite_rect.bottom = rect_scene.bottom
             sprite_rect.right = min(sprite_rect.right, rect_scene.right)
             config.screen.blit(sprite_scaled, sprite_rect.topleft)
@@ -183,22 +184,33 @@ class GestionnaireHospitalier:
                 bulle_img = bulles_patients[0]
             elif self.patient_en_cours.type_client == "client 2":
                 bulle_img = bulles_patients[1]
-            elif self.patient_en_cours.type_client == "client riche":
+            else:
                 bulle_img = bulles_patients[2]
 
-            bulle_scaled = config.scale_fit(bulle_img, rect_scene.width, rect_scene.height)
-            bulle_rect = bulle_scaled.get_rect()
-            bulle_rect.topleft = rect_scene.topleft
-            config.screen.blit(bulle_scaled, bulle_rect.topleft)
+            
 
-            cadre_scaled = config.scale_fit(zone_de_texte, rect_scene.width, rect_scene.height)
-            cadre_de_texte = cadre_scaled.get_rect()
-            texte_x = cadre_de_texte.x
-            texte_y = cadre_de_texte.y
-            maxi_texte = cadre_de_texte.width
+            texte_x = rect_scene.x + round(rect_scene.width * (24 / 180))
+            texte_y = rect_scene.y + round(rect_scene.height * (22 / 109))
+            maxi_texte = round(rect_scene.width * (59 / 180))
             config.afficher_texte(self.patient_en_cours.message(), texte_x, texte_y, maxi_texte, (0, 0, 0))
 
         # Bureau centré horizontalement sur la scène et calé en bas de rect_scene
         bureau_scaled = config.scale_fit(self.bureau, rect_scene.width, rect_scene.height)
         bureau_rect = bureau_scaled.get_rect(midbottom=rect_scene.midbottom)
         config.screen.blit(bureau_scaled, bureau_rect.topleft)
+
+        def draw_ordi(self):
+            ordi = pygame.image.load("ecran_vue_fps_placeholder.png").convert_alpha()
+            ordi_scaled = config.scale_fit(ordi, rect_scene.width, rect_scene.height)
+            ordi_rect = ordi_scaled.get_rect(midbottom=rect_scene.midbottom)
+            config.screen.blit(ordi_scaled, ordi_rect.topleft)
+
+            for chambre in self.chambres:
+                if chambre in chambres_libres():
+                    config.afficher_texte(f"Chambre {chambre}: Libre", 10, 10 + (chambre - 1) * 30, 200, (0, 255, 0))
+                    ecran_acceuil.bouton_menus(10, 10 + (chambre - 1) * 30, 200, 30)
+                if pygame.mouse.get_pressed()[0] and ecran_acceuil.bouton_menus(10, 10 + (chambre - 1) * 30, 200, 30):
+                    self.assigner_patient_a_chambre(chambre)
+
+
+

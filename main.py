@@ -61,6 +61,11 @@ while gameRunning:
         config.screen.fill((255, 255, 255))
         hopital_manager.draw_salle_d_attente()
 
+    if scene_en_cours != "first_person":
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_a:
+                arrivée_patients.draw_ordi()
+
 
     pygame.display.flip()
 
