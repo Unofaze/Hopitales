@@ -23,7 +23,7 @@ scenes = [
 
 COULEUR_FOND = (0, 0, 0)  # Couleur du fond (noir)
 
-def scale_fit(image, max_w, max_h):
+def scale_fit(image, max_w, max_h):     # Par l'IA
     """Redimensionne une image en conservant son ratio pour tenir dans (max_w, max_h)."""
     img_w, img_h = image.get_size()
     if img_w <= 0 or img_h <= 0 or max_w <= 0 or max_h <= 0:
@@ -36,8 +36,8 @@ def scale_fit(image, max_w, max_h):
 def detecter_rectangle(image, couleur_cible=None):      # Par l'IA
     """
     Retourne un pygame.Rect correspondant au rectangle dessiné dans `image`.
-    - Si `couleur_cible` est None : détecte les pixels visibles (alpha > 0).
-    - Si `couleur_cible` est un tuple (r, g, b) : détecte les pixels de cette couleur.
+    - Si couleur_cible est None : détecte les pixels visibles (alpha > 0).
+    - Si couleur_cible est un tuple (r, g, b) : détecte les pixels de cette couleur.
     """
     largeur, hauteur = image.get_size()
     x_min = largeur
@@ -122,7 +122,7 @@ def afficher_texte(texte, x, y, maxi, couleur, font=None):
     """
 
     if font == None:
-        font = pygame.font.SysFont("arial", 48)
+        font = pygame.font.SysFont("arial", 54)
 
     mots = texte.split(' ')
     ligne_actuelle = ''
@@ -144,7 +144,8 @@ def afficher_texte(texte, x, y, maxi, couleur, font=None):
 
 
 # --------------------------------------------------------- |
-# Infos comme ça qui peuvent servir (Joseph je vais te baiser à pas prendre des multiples de 1920 et 1080 pour les tailles des fichiers pixilart) :
+# Infos comme ça qui peuvent servir (Joseph je vais te baiser à prendre des dimensions de con pour les images) :
+# Bon dc pas besoin des ces infos mais je les laisse
 
     # coordonnées de la zone de texte des clients :
         # abscisse du message : 24/180 de la largeur de l'écran
