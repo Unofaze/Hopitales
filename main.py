@@ -43,7 +43,7 @@ while gameRunning:
                 if event.key == pygame.K_SPACE:
                     scene_en_cours = "third_person"
                 elif event.key == pygame.K_a:
-                    hopital_manager.assigner_patient_a_chambre(hopital_manager.premiere_chambre_libre())
+                    scene_en_cours = "ordi"
 
     if scene_en_cours != "menu":
         hopital_manager.mettre_a_jour_accueil()
@@ -62,12 +62,6 @@ while gameRunning:
     elif scene_en_cours == "first_person":
         config.screen.fill((255, 255, 255))
         hopital_manager.draw_salle_d_attente()
-
-    if scene_en_cours != "first_person":
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_a:
-                arrivée_patients.draw_ordi()
-
 
     pygame.display.flip()
 

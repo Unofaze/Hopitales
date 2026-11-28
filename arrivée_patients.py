@@ -3,6 +3,7 @@ import time
 import random
 from random import randint
 import config
+import ecran_accueil
 
 sprites_patients = [
     pygame.image.load("hopital pour projet nsi/fps/client 1/c1b.png").convert_alpha(),
@@ -91,7 +92,7 @@ class Patient:
 #        config.afficher_texte("La gravité du problème est :" + str(self.gravite_probleme) + " sur une échelle de 1 à 10.", config.screen_width*3/4, config.screen_height//2 + 50, config.screen_width*3/4+100, (0, 0, 0))
 
     def message(self):
-        return f"Bonjour, je m'appelle {self.nom}. Je viens parce que j'ai {self.probleme}"
+        return f"Bonjour, je m'appelle {self.nom}. Je viens parce que j'ai {self.probleme}."
 
 class GestionnaireHospitalier:
     def __init__(self, delai_arrivee_ms):
@@ -167,7 +168,9 @@ class GestionnaireHospitalier:
     def draw_salle_d_attente(self):
         config.screen.fill(config.COULEUR_FOND)
 
+        global fond_scaled
         fond_scaled = config.scale_fit(self.fond_salle_d_attente, config.screen_width, config.screen_height)
+        global rect_scene
         rect_scene = fond_scaled.get_rect(center=(config.screen_width // 2, config.screen_height // 2))
         config.screen.blit(fond_scaled, rect_scene.topleft)
 
@@ -195,7 +198,7 @@ class GestionnaireHospitalier:
             bulle_rect.topleft = rect_scene.topleft
             config.screen.blit(bulle_scaled, bulle_rect.topleft)
 
-            cadre_de_texte = pygame.Rect(rect_scene.width * 30 / 180, rect_scene.height * 22 / 109, rect_scene.width * 70 / 180, rect_scene.height * 32 / 109)
+            cadre_de_texte = pygame.Rect(rect_scene.width * 30 / 180, rect_scene.height * 22 / 109, rect_scene.width * 100 / 180, rect_scene.height * 32 / 109)
             texte_x = cadre_de_texte.x
             texte_y = cadre_de_texte.y
             maxi_texte = cadre_de_texte.width
@@ -205,18 +208,18 @@ class GestionnaireHospitalier:
         bureau_rect = bureau_scaled.get_rect(midbottom=rect_scene.midbottom)
         config.screen.blit(bureau_scaled, bureau_rect.topleft)
 
-        def draw_ordi(self):
-            ordi = pygame.image.load("ecran_vue_fps_placeholder.png").convert_alpha()
-            ordi_scaled = config.scale_fit(ordi, rect_scene.width, rect_scene.height)
-            ordi_rect = ordi_scaled.get_rect(midbottom=rect_scene.midbottom)
-            config.screen.blit(ordi_scaled, ordi_rect.topleft)
+    def draw_ordi(self):
+        ordi = pygame.image.load("ecran_vue_fps_placeholder.png").convert_alpha()
+        ordi_scaled = config.scale_fit(ordi, rect_scene.width, rect_scene.height)
+        ordi_rect = ordi_scaled.get_rect(midbottom=rect_scene.midbottom)
+        config.screen.blit(ordi_scaled, ordi_rect.topleft)
 
-            for chambre in self.chambres:
-                if chambre in chambres_libres():
-                    config.afficher_texte(f"Chambre {chambre}: Libre", 10, 10 + (chambre - 1) * 30, 200, (0, 255, 0))
-                    ecran_acceuil.bouton_menus(10, 10 + (chambre - 1) * 30, 200, 30)
-                if pygame.mouse.get_pressed()[0] and ecran_acceuil.bouton_menus(10, 10 + (chambre - 1) * 30, 200, 30):
-                    self.assigner_patient_a_chambre(chambre)
+        for chambre in self.chambres:
+            if chambre in self.chambres_libres():
+                config.afficher_texte(f"Chambre {chambre}: Libre", 10, 10 + (chambre - 1) * 30, 200, (0, 255, 0))
+                ecran_accueil.bouton_menus(10, 10 + (chambre - 1) * 30, 200, 30)
+            if pygame.mouse.get_pressed()[0] and ecran_accueil.bouton_menus(10, 10 + (chambre - 1) * 30, 200, 30):
+                self.assigner_patient_a_chambre(chambre)
 
 
 

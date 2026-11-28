@@ -19,6 +19,7 @@ scenes = [
     "menu",
     "first_person",
     "third_person",
+    "ordi"
 ]
 
 
