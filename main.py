@@ -7,7 +7,7 @@ import arrivée_patients
 
 dragging = False
 scene_en_cours = "menu"
-hopital_manager = arrivée_patients.GestionnaireHospitalier(1000) # 1000 millisecondes = 1 secondes (temps entre l'arivée de chaque patient)
+hopital_manager = arrivée_patients.GestionnaireHospitalier(10000) # 10000 millisecondes = 10 secondes (temps entre l'arrivée de chaque patient)
 
 gameRunning = True
 while gameRunning:
@@ -42,6 +42,8 @@ while gameRunning:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     scene_en_cours = "third_person"
+                elif event.key == pygame.K_a:
+                    hopital_manager.assigner_patient_a_chambre(hopital_manager.premiere_chambre_libre())
 
     if scene_en_cours != "menu":
         hopital_manager.mettre_a_jour_accueil()

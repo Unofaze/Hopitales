@@ -134,6 +134,12 @@ class GestionnaireHospitalier:
                 chambres_disponibles.append(chambre)
         return chambres_disponibles
 
+    def premiere_chambre_libre(self):
+        for chambre in self.chambres:
+            if self.chambres[chambre] == 0:
+                return chambre
+        return None
+
     def nouveau_patient_dans_la_file_d_attente(self, maintenant_ms):
         if self.chambres_libres() != [] and maintenant_ms - self.dernier_ajout_ms >= self.delai_arrivee_ms:
             self.file_d_attente.enfile(Patient())
@@ -189,7 +195,7 @@ class GestionnaireHospitalier:
             bulle_rect.topleft = rect_scene.topleft
             config.screen.blit(bulle_scaled, bulle_rect.topleft)
 
-            cadre_de_texte = pygame.Rect(rect_scene.width * 30 / 180, rect_scene.height * 22 / 109, rect_scene.width * 65 / 180, rect_scene.height * 32 / 109)
+            cadre_de_texte = pygame.Rect(rect_scene.width * 30 / 180, rect_scene.height * 22 / 109, rect_scene.width * 70 / 180, rect_scene.height * 32 / 109)
             texte_x = cadre_de_texte.x
             texte_y = cadre_de_texte.y
             maxi_texte = cadre_de_texte.x + cadre_de_texte.width

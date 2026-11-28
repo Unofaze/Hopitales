@@ -21,6 +21,7 @@ scenes = [
     "third_person",
 ]
 
+
 COULEUR_FOND = (0, 0, 0)  # Couleur du fond (noir)
 
 def scale_fit(image, max_w, max_h):     # Par l'IA
