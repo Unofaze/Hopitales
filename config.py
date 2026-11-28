@@ -33,6 +33,41 @@ def scale_fit(image, max_w, max_h):
     new_h = max(1, round(img_h * ratio))
     return pygame.transform.scale(image, (new_w, new_h))
 
+def detecter_rectangle(image, couleur_cible=None):      # Par l'IA
+    """
+    Retourne un pygame.Rect correspondant au rectangle dessiné dans `image`.
+    - Si `couleur_cible` est None : détecte les pixels visibles (alpha > 0).
+    - Si `couleur_cible` est un tuple (r, g, b) : détecte les pixels de cette couleur.
+    """
+    largeur, hauteur = image.get_size()
+    x_min = largeur
+    y_min = hauteur
+    x_max = -1
+    y_max = -1
+
+    for y in range(hauteur):
+        for x in range(largeur):
+            r, g, b, a = image.get_at((x, y))
+
+            if couleur_cible is None:
+                est_dans_rect = a > 0
+            else:
+                est_dans_rect = (a > 0) and ((r, g, b) == couleur_cible)
+
+            if est_dans_rect:
+                if x < x_min:
+                    x_min = x
+                if y < y_min:
+                    y_min = y
+                if x > x_max:
+                    x_max = x
+                if y > y_max:
+                    y_max = y
+
+    if x_max < x_min or y_max < y_min:
+        return pygame.Rect(0, 0, largeur, hauteur)
+
+    return pygame.Rect(x_min, y_min, x_max - x_min + 1, y_max - y_min + 1)
 
 class File:
     def __init__(self):
