@@ -21,6 +21,19 @@ scenes = [
     "third_person",
 ]
 
+COULEUR_FOND = (0, 0, 0)  # Couleur du fond (noir)
+
+def scale_fit(image, max_w, max_h):
+    """Redimensionne une image en conservant son ratio pour tenir dans (max_w, max_h)."""
+    img_w, img_h = image.get_size()
+    if img_w <= 0 or img_h <= 0 or max_w <= 0 or max_h <= 0:
+        return image
+    ratio = min(max_w / img_w, max_h / img_h)
+    new_w = max(1, round(img_w * ratio))
+    new_h = max(1, round(img_h * ratio))
+    return pygame.transform.scale(image, (new_w, new_h))
+
+
 class File:
     def __init__(self):
         self.valeurs = []

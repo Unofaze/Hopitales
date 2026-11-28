@@ -5,12 +5,18 @@ from random import randint
 import config
 
 sprites_patients = [
-    pygame.transform.scale(pygame.image.load("hopital pour projet nsi/fps/client 1/c1b.png").convert_alpha(), (round(config.screen_width*63/180), round(config.screen_height*93/109))),
-    pygame.transform.scale(pygame.image.load("hopital pour projet nsi/fps/client 1/c1g.png").convert_alpha(), (round(config.screen_width*63/180), round(config.screen_height*93/109))),
-    pygame.transform.scale(pygame.image.load("hopital pour projet nsi/fps/client 1/c1o.png").convert_alpha(), (round(config.screen_width*63/180), round(config.screen_height*93/109))),
-    pygame.transform.scale(pygame.image.load("hopital pour projet nsi/fps/client 1/c1r.png").convert_alpha(), (round(config.screen_width*63/180), round(config.screen_height*93/109))),
-    pygame.transform.scale(pygame.image.load("hopital pour projet nsi/fps/client 2/c2r.png").convert_alpha(), (round(config.screen_width*42/180), round(config.screen_height*84/109))),
-    pygame.transform.scale(pygame.image.load("hopital pour projet nsi/fps/client riche/cr.png").convert_alpha(), (round(config.screen_width*33/180), round(config.screen_height*103/109))),
+    pygame.image.load("hopital pour projet nsi/fps/client 1/c1b.png").convert_alpha(),
+    pygame.image.load("hopital pour projet nsi/fps/client 1/c1g.png").convert_alpha(),
+    pygame.image.load("hopital pour projet nsi/fps/client 1/c1o.png").convert_alpha(),
+    pygame.image.load("hopital pour projet nsi/fps/client 1/c1r.png").convert_alpha(),
+    pygame.image.load("hopital pour projet nsi/fps/client 2/c2r.png").convert_alpha(),
+    pygame.image.load("hopital pour projet nsi/fps/client riche/cr.png").convert_alpha()
+]
+
+bulles_patients = [
+    pygame.image.load("hopital pour projet nsi/fps/client 1/bulle client 1.png").convert_alpha(),
+    pygame.image.load("hopital pour projet nsi/fps/client 2/bulle client 2.png").convert_alpha(),
+    pygame.image.load("hopital pour projet nsi/fps/client riche/crb.png").convert_alpha()
 ]
 
 def dico_chambre():
@@ -41,6 +47,13 @@ class Patient:
         self.nom = nom_patient()
         self.gravite_probleme = gravite_probleme
         self.sprite = sprite_patient(sprites_patients)
+
+        if self.sprite in sprites_patients[0:4]:
+            self.type_client = "client 1"
+        elif self.sprite == sprites_patients[4]:
+            self.type_client = "client 2"
+        else:
+            self.type_client = "client riche"
 
         if self.gravite_probleme <= 2:
             self.probleme = "un contrôle à faire"
@@ -78,7 +91,7 @@ class Patient:
 #        config.afficher_texte("La gravité du problème est :" + str(self.gravite_probleme) + " sur une échelle de 1 à 10.", config.screen_width*3/4, config.screen_height//2 + 50, config.screen_width*3/4+100, (0, 0, 0))
 
     def message(self):
-        return f"Bonjour, je m'appelle {self.nom}, Je viens parce que j'ai {self.probleme}"
+        return f"Bonjour, je m'appelle {self.nom}. Je viens parce que j'ai {self.probleme}"
 
 class GestionnaireHospitalier:
     def __init__(self, delai_arrivee_ms):
@@ -90,8 +103,8 @@ class GestionnaireHospitalier:
         self.delai_arrivee_ms = delai_arrivee_ms
         self.dernier_ajout_ms = pygame.time.get_ticks()
 
-        self.fond_salle_d_attente = pygame.transform.scale(pygame.image.load("hopital pour projet nsi/fps/salle d'attente.png").convert_alpha(),(config.screen_width, config.screen_height))
-        self.bureau = pygame.transform.scale(pygame.image.load("hopital pour projet nsi/fps/bureau.png").convert_alpha(),(config.screen_width, config.screen_height))
+        self.fond_salle_d_attente = pygame.image.load("hopital pour projet nsi/fps/salle d'attente.png").convert_alpha()
+        self.bureau = pygame.image.load("hopital pour projet nsi/fps/bureau.png").convert_alpha()
 
     def get_delai_arrivee_ms(self):
         return self.delai_arrivee_ms
@@ -146,8 +159,39 @@ class GestionnaireHospitalier:
             self.patient_en_cours = self.file_d_attente.defile()
 
     def draw_salle_d_attente(self):
-        config.screen.blit(self.fond_salle_d_attente, (0, 0))
+        config.screen.fill(config.COULEUR_FOND)
+
+        fond_scaled = config.scale_fit(self.fond_salle_d_attente, config.screen_width, config.screen_height)
+        rect_scene = fond_scaled.get_rect(center=(config.screen_width // 2, config.screen_height // 2))
+        config.screen.blit(fond_scaled, rect_scene.topleft)
+
         if self.patient_en_cours is not None:
-            config.screen.blit(self.patient_en_cours.sprite, (round(config.screen_width*101/180), round(config.screen_height*16/109)))
-            config.afficher_texte(self.patient_en_cours.message(), round(config.screen_width*24/180), round(config.screen_height*22/109), round(config.screen_width*59/180), (0, 0, 0))
-        config.screen.blit(self.bureau, (0, 0))
+            # Taille max 2 fois plus grande que les proportions de référence, sans déformation
+            max_w = round(rect_scene.width * (63 / 180) * 2)
+            max_h = round(rect_scene.height * (93 / 109) * 2)
+            sprite_scaled = config.scale_fit(self.patient_en_cours.sprite, max_w, max_h)
+
+            sprite_rect = sprite_scaled.get_rect()
+            sprite_rect.x = rect_scene.x + round(rect_scene.width * (92 / 180))
+            sprite_rect.bottom = rect_scene.bottom
+            sprite_rect.right = min(sprite_rect.right, rect_scene.right)
+            config.screen.blit(sprite_scaled, sprite_rect.topleft)
+
+            if self.patient_en_cours.type_client == "client 1":
+                bulle_img = bulles_patients[0]
+            elif self.patient_en_cours.type_client == "client 2":
+                bulle_img = bulles_patients[1]
+            else:
+                bulle_img = bulles_patients[2]
+
+            
+
+            texte_x = rect_scene.x + round(rect_scene.width * (24 / 180))
+            texte_y = rect_scene.y + round(rect_scene.height * (22 / 109))
+            maxi_texte = round(rect_scene.width * (59 / 180))
+            config.afficher_texte(self.patient_en_cours.message(), texte_x, texte_y, maxi_texte, (0, 0, 0))
+
+        # Bureau centré horizontalement sur la scène et calé en bas de rect_scene
+        bureau_scaled = config.scale_fit(self.bureau, rect_scene.width, rect_scene.height)
+        bureau_rect = bureau_scaled.get_rect(midbottom=rect_scene.midbottom)
+        config.screen.blit(bureau_scaled, bureau_rect.topleft)

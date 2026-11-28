@@ -7,7 +7,7 @@ import arrivée_patients
 
 dragging = False
 scene_en_cours = "menu"
-hopital_manager = arrivée_patients.GestionnaireHospitalier(10000) # 10000 millisecondes = 10 secondes (temps entre l'arivée de chaque patient)
+hopital_manager = arrivée_patients.GestionnaireHospitalier(1000) # 1000 millisecondes = 1 secondes (temps entre l'arivée de chaque patient)
 
 gameRunning = True
 while gameRunning:
