@@ -45,6 +45,11 @@ while gameRunning:
                 elif event.key == pygame.K_a:
                     scene_en_cours = "ordi"
 
+        elif scene_en_cours == "ordi":
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_a:
+                    scene_en_cours = "first_person"
+
     if scene_en_cours != "menu":
         hopital_manager.mettre_a_jour_accueil()
 
@@ -60,8 +65,12 @@ while gameRunning:
         hospital.draw()
 
     elif scene_en_cours == "first_person":
-        config.screen.fill((255, 255, 255))
+        config.screen.fill((0, 0, 0))
         hopital_manager.draw_salle_d_attente()
+
+    elif scene_en_cours == "ordi":
+        config.screen.fill((0, 0, 0))
+        hopital_manager.draw_ordi()  
 
     pygame.display.flip()
 
