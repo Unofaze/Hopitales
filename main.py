@@ -15,9 +15,6 @@ while gameRunning:
         if event.type == pygame.QUIT:
             gameRunning = False
 
-        if scene_en_cours != "menu":
-            hopital_manager.mettre_a_jour_accueil()
-
         if scene_en_cours == "third_person":
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 2:
                 dragging = True
@@ -45,6 +42,9 @@ while gameRunning:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     scene_en_cours = "third_person"
+
+    if scene_en_cours != "menu":
+        hopital_manager.mettre_a_jour_accueil()
 
     if scene_en_cours == "menu":
         ecran_accueil.draw()

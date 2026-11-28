@@ -87,7 +87,7 @@ def afficher_texte(texte, x, y, maxi, couleur, font=None):
     """
 
     if font == None:
-        font = pygame.font.SysFont("arial", 24)
+        font = pygame.font.SysFont("arial", 48)
 
     mots = texte.split(' ')
     ligne_actuelle = ''
