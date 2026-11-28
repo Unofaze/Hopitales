@@ -173,12 +173,12 @@ class GestionnaireHospitalier:
 
         if self.patient_en_cours is not None:
             # Taille max 2 fois plus grande que les proportions de référence, sans déformation
-            max_w = rect_scene.width
-            max_h = rect_scene.height
+            max_w = round(rect_scene.width * (63 / 180) * 2)
+            max_h = round(rect_scene.height * (93 / 109) * 2)
             sprite_scaled = config.scale_fit(self.patient_en_cours.sprite, max_w, max_h)
 
             sprite_rect = sprite_scaled.get_rect()
-            sprite_rect.x = rect_scene.x + rect_scene.width
+            sprite_rect.x = rect_scene.x + round(rect_scene.width * (92 / 180))
             sprite_rect.bottom = rect_scene.bottom
             sprite_rect.right = min(sprite_rect.right, rect_scene.right)
             config.screen.blit(sprite_scaled, sprite_rect.topleft)
@@ -187,7 +187,7 @@ class GestionnaireHospitalier:
                 bulle_img = bulles_patients[0]
             elif self.patient_en_cours.type_client == "client 2":
                 bulle_img = bulles_patients[1]
-            elif self.patient_en_cours.type_client == "client riche":
+            else:
                 bulle_img = bulles_patients[2]
 
             bulle_scaled = config.scale_fit(bulle_img, rect_scene.width, rect_scene.height)
@@ -198,9 +198,25 @@ class GestionnaireHospitalier:
             cadre_de_texte = pygame.Rect(rect_scene.width * 30 / 180, rect_scene.height * 22 / 109, rect_scene.width * 70 / 180, rect_scene.height * 32 / 109)
             texte_x = cadre_de_texte.x
             texte_y = cadre_de_texte.y
-            maxi_texte = cadre_de_texte.x + cadre_de_texte.width
+            maxi_texte = cadre_de_texte.width
             config.afficher_texte(self.patient_en_cours.message(), texte_x, texte_y, maxi_texte, (0, 0, 0))
 
         bureau_scaled = config.scale_fit(self.bureau, rect_scene.width, rect_scene.height)
         bureau_rect = bureau_scaled.get_rect(midbottom=rect_scene.midbottom)
         config.screen.blit(bureau_scaled, bureau_rect.topleft)
+
+        def draw_ordi(self):
+            ordi = pygame.image.load("ecran_vue_fps_placeholder.png").convert_alpha()
+            ordi_scaled = config.scale_fit(ordi, rect_scene.width, rect_scene.height)
+            ordi_rect = ordi_scaled.get_rect(midbottom=rect_scene.midbottom)
+            config.screen.blit(ordi_scaled, ordi_rect.topleft)
+
+            for chambre in self.chambres:
+                if chambre in chambres_libres():
+                    config.afficher_texte(f"Chambre {chambre}: Libre", 10, 10 + (chambre - 1) * 30, 200, (0, 255, 0))
+                    ecran_acceuil.bouton_menus(10, 10 + (chambre - 1) * 30, 200, 30)
+                if pygame.mouse.get_pressed()[0] and ecran_acceuil.bouton_menus(10, 10 + (chambre - 1) * 30, 200, 30):
+                    self.assigner_patient_a_chambre(chambre)
+
+
+
